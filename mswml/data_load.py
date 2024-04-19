@@ -80,9 +80,9 @@ def get_train_dataloader(flair_path, gts_path, num_workers, cache_rate=0.1):
     Returns:
       monai.data.DataLoader() class object.
     """
-    flair = sorted(glob(os.path.join(flair_path, "*FLAIR_isovox.nii.gz")),
+    flair = sorted(glob(os.path.join(flair_path, "*FLAIR_isovox.nii")),
                    key=lambda i: int(re.sub('\D', '', i)))  # Collect all flair images sorted
-    segs = sorted(glob(os.path.join(gts_path, "*gt_isovox.nii.gz")),
+    segs = sorted(glob(os.path.join(gts_path, "*gt_isovox.nii")),
                   key=lambda i: int(re.sub('\D', '', i)))  # Collect all corresponding ground truths
 
     files = [{"image": fl, "label": seg} for fl, seg in zip(flair, segs)]
@@ -111,13 +111,13 @@ def get_val_dataloader(flair_path, gts_path, num_workers, cache_rate=0.1, bm_pat
     Returns:
       monai.data.DataLoader() class object.
     """
-    flair = sorted(glob(os.path.join(flair_path, "*FLAIR_isovox.nii.gz")),
+    flair = sorted(glob(os.path.join(flair_path, "*FLAIR_isovox.nii")),
                    key=lambda i: int(re.sub('\D', '', i)))  # Collect all flair images sorted
-    segs = sorted(glob(os.path.join(gts_path, "*_isovox.nii.gz")),
+    segs = sorted(glob(os.path.join(gts_path, "*_isovox.nii")),
                   key=lambda i: int(re.sub('\D', '', i)))  # Collect all corresponding ground truths
 
     if bm_path is not None:
-        bms = sorted(glob(os.path.join(bm_path, "*isovox_fg_mask.nii.gz")),
+        bms = sorted(glob(os.path.join(bm_path, "*isovox_fg_mask.nii")),
                      key=lambda i: int(re.sub('\D', '', i)))  # Collect all corresponding brain masks
 
         assert len(flair) == len(segs) == len(bms), f"Some files must be missing: {[len(flair), len(segs), len(bms)]}"
@@ -157,11 +157,11 @@ def get_flair_dataloader(flair_path, num_workers, cache_rate=0.1, bm_path=None):
     Returns:
       monai.data.DataLoader() class object.
     """
-    flair = sorted(glob(os.path.join(flair_path, "*FLAIR_isovox.nii.gz")),
+    flair = sorted(glob(os.path.join(flair_path, "*FLAIR_isovox.nii")),
                    key=lambda i: int(re.sub('\D', '', i)))  # Collect all flair images sorted
 
     if bm_path is not None:
-        bms = sorted(glob(os.path.join(bm_path, "*isovox_fg_mask.nii.gz")),
+        bms = sorted(glob(os.path.join(bm_path, "*isovox_fg_mask.nii")),
                      key=lambda i: int(re.sub('\D', '', i)))  # Collect all corresponding brain masks
 
         assert len(flair) == len(bms), f"Some files must be missing: {[len(flair), len(bms)]}"
